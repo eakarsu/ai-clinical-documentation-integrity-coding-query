@@ -1,0 +1,1305 @@
+{
+  "id": "ai-clinical-documentation-integrity-coding-query",
+  "title": "Clinical Documentation Integrity Copilot",
+  "tagline": "Pre-bill documentation review, compliant queries, and coding-quality intelligence",
+  "industry": "Provider Revenue Integrity",
+  "port": 4515,
+  "accent": "#0891b2",
+  "valueLabel": "Revenue at review",
+  "value": "$9.7M",
+  "workflows": [
+    {
+      "id": "prebill",
+      "title": "Pre-Bill Documentation Review",
+      "description": "Identify missing specificity, medical necessity, and documentation support before claim release.",
+      "fields": [
+        {
+          "key": "encounterId",
+          "label": "Encounter Reference",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "serviceLine",
+          "label": "Service Line",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "proposedCodes",
+          "label": "Proposed Codes",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "clinicalSummary",
+          "label": "Clinical Summary",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "encounterId": "Encounter Reference STD-2026-104",
+            "serviceLine": "Service Line STD-2026-104",
+            "proposedCodes": "Proposed Codes STD-2026-104",
+            "clinicalSummary": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "encounterId": "Encounter Reference RISK-2026-227",
+            "serviceLine": "Service Line RISK-2026-227",
+            "proposedCodes": "Proposed Codes RISK-2026-227",
+            "clinicalSummary": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "encounterId": "Encounter Reference EXC-2026-319",
+            "serviceLine": "Service Line EXC-2026-319",
+            "proposedCodes": "Proposed Codes EXC-2026-319",
+            "clinicalSummary": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "query",
+      "title": "Compliant Physician Query",
+      "description": "Draft a non-leading clinical clarification query supported by record indicators.",
+      "fields": [
+        {
+          "key": "provider",
+          "label": "Provider",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "encounterId",
+          "label": "Encounter Reference",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "clinicalIndicators",
+          "label": "Clinical Indicators",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "key": "clarificationNeeded",
+          "label": "Clarification Needed",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "provider": "Northlake Internal Medicine",
+            "encounterId": "Encounter Reference STD-2026-104",
+            "clinicalIndicators": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "clarificationNeeded": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "provider": "Riverside Cardiology Group",
+            "encounterId": "Encounter Reference RISK-2026-227",
+            "clinicalIndicators": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "clarificationNeeded": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "provider": "Pinecrest Specialty Clinic",
+            "encounterId": "Encounter Reference EXC-2026-319",
+            "clinicalIndicators": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "clarificationNeeded": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "denial-risk",
+      "title": "Denial Risk Prediction",
+      "description": "Assess coding, documentation, coverage, and medical-necessity denial risk.",
+      "fields": [
+        {
+          "key": "payer",
+          "label": "Payer",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "procedure",
+          "label": "Procedure / DRG",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "documentationGap",
+          "label": "Documentation Gap",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "key": "riskLevel",
+          "label": "Risk Level",
+          "type": "select",
+          "required": false,
+          "options": [
+            "Low",
+            "Moderate",
+            "High",
+            "Critical"
+          ]
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "payer": "Payer STD-2026-104",
+            "procedure": "Procedure / DRG STD-2026-104",
+            "documentationGap": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "riskLevel": "Critical"
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "payer": "Payer RISK-2026-227",
+            "procedure": "Procedure / DRG RISK-2026-227",
+            "documentationGap": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "riskLevel": "Critical"
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "payer": "Payer EXC-2026-319",
+            "procedure": "Procedure / DRG EXC-2026-319",
+            "documentationGap": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "riskLevel": "Critical"
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "drg",
+      "title": "DRG Validation",
+      "description": "Validate principal diagnosis, secondary conditions, procedures, and DRG assignment.",
+      "fields": [
+        {
+          "key": "encounterId",
+          "label": "Encounter Reference",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "assignedDrg",
+          "label": "Assigned DRG",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "principalDiagnosis",
+          "label": "Principal Diagnosis",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "validationNotes",
+          "label": "Validation Notes",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "encounterId": "Encounter Reference STD-2026-104",
+            "assignedDrg": "Assigned DRG STD-2026-104",
+            "principalDiagnosis": "E11.22",
+            "validationNotes": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "encounterId": "Encounter Reference RISK-2026-227",
+            "assignedDrg": "Assigned DRG RISK-2026-227",
+            "principalDiagnosis": "I50.32",
+            "validationNotes": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "encounterId": "Encounter Reference EXC-2026-319",
+            "assignedDrg": "Assigned DRG EXC-2026-319",
+            "principalDiagnosis": "J44.1",
+            "validationNotes": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "quality",
+      "title": "Quality Measure Documentation",
+      "description": "Check documentation supporting severity, risk adjustment, and quality measures.",
+      "fields": [
+        {
+          "key": "measure",
+          "label": "Quality Measure",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "encounterId",
+          "label": "Encounter Reference",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "requiredEvidence",
+          "label": "Required Evidence",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "key": "evidenceStatus",
+          "label": "Evidence Status",
+          "type": "select",
+          "required": false,
+          "options": [
+            "Complete",
+            "Partial",
+            "Missing",
+            "Conflicting"
+          ]
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "measure": "Quality Measure STD-2026-104",
+            "encounterId": "Encounter Reference STD-2026-104",
+            "requiredEvidence": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "evidenceStatus": "Conflicting"
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "measure": "Quality Measure RISK-2026-227",
+            "encounterId": "Encounter Reference RISK-2026-227",
+            "requiredEvidence": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "evidenceStatus": "Missing"
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "measure": "Quality Measure EXC-2026-319",
+            "encounterId": "Encounter Reference EXC-2026-319",
+            "requiredEvidence": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "evidenceStatus": "Conflicting"
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "provider-education",
+      "title": "Provider Education Brief",
+      "description": "Create targeted feedback from recurring documentation and coding patterns.",
+      "fields": [
+        {
+          "key": "provider",
+          "label": "Provider",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "specialty",
+          "label": "Specialty",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "pattern",
+          "label": "Observed Pattern",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "key": "educationGoal",
+          "label": "Education Goal",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "provider": "Northlake Internal Medicine",
+            "specialty": "Specialty STD-2026-104",
+            "pattern": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "educationGoal": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "provider": "Riverside Cardiology Group",
+            "specialty": "Specialty RISK-2026-227",
+            "pattern": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "educationGoal": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "provider": "Pinecrest Specialty Clinic",
+            "specialty": "Specialty EXC-2026-319",
+            "pattern": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis.",
+            "educationGoal": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "appeal",
+      "title": "Clinical Denial Appeal",
+      "description": "Build a clinically grounded appeal using record evidence and coverage criteria.",
+      "fields": [
+        {
+          "key": "denialId",
+          "label": "Denial ID",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "denialReason",
+          "label": "Denial Reason",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "amount",
+          "label": "Amount",
+          "type": "currency",
+          "required": true
+        },
+        {
+          "key": "appealEvidence",
+          "label": "Appeal Evidence",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "denialId": "Denial ID STD-2026-104",
+            "denialReason": "Denial Reason STD-2026-104",
+            "amount": 285000,
+            "appealEvidence": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "denialId": "Denial ID RISK-2026-227",
+            "denialReason": "Denial Reason RISK-2026-227",
+            "amount": 875000,
+            "appealEvidence": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "denialId": "Denial ID EXC-2026-319",
+            "denialReason": "Denial Reason EXC-2026-319",
+            "amount": 142500,
+            "appealEvidence": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "title": "Documentation Trend Analysis",
+      "description": "Analyze query response, denial, DRG, service-line, and provider trends.",
+      "fields": [
+        {
+          "key": "period",
+          "label": "Analysis Period",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "serviceLine",
+          "label": "Service Line",
+          "type": "text",
+          "required": true
+        },
+        {
+          "key": "encounterCount",
+          "label": "Encounter Count",
+          "type": "number",
+          "required": true
+        },
+        {
+          "key": "analysisQuestion",
+          "label": "Analysis Question",
+          "type": "textarea",
+          "required": false
+        }
+      ],
+      "states": [
+        "intake",
+        "analyzing",
+        "review",
+        "approved",
+        "closed"
+      ],
+      "examples": [
+        {
+          "id": "standard",
+          "label": "Fill Standard Case",
+          "values": {
+            "period": "Analysis Period STD-2026-104",
+            "serviceLine": "Service Line STD-2026-104",
+            "encounterCount": 125,
+            "analysisQuestion": "Complete: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "high-risk",
+          "label": "Fill High-Risk Case",
+          "values": {
+            "period": "Analysis Period RISK-2026-227",
+            "serviceLine": "Service Line RISK-2026-227",
+            "encounterCount": 975,
+            "analysisQuestion": "Critical exception: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        },
+        {
+          "id": "exception",
+          "label": "Fill Exception Case",
+          "values": {
+            "period": "Analysis Period EXC-2026-319",
+            "serviceLine": "Service Line EXC-2026-319",
+            "encounterCount": 41,
+            "analysisQuestion": "Reviewer follow-up: source evidence, financial impact, control context, and documented reviewer rationale are available for analysis."
+          }
+        }
+      ],
+      "aiActions": [
+        {
+          "id": "assess",
+          "label": "Assess Risk & Value"
+        },
+        {
+          "id": "evidence",
+          "label": "Build Evidence Checklist"
+        },
+        {
+          "id": "plan",
+          "label": "Recommend Action Plan"
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {
+      "id": "prebill",
+      "title": "Pre-Bill Documentation Review Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for pre-bill documentation review.",
+      "table": "op_prebill",
+      "columns": [
+        {
+          "key": "encounterId",
+          "label": "Encounter Reference",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_encounterId"
+        },
+        {
+          "key": "serviceLine",
+          "label": "Service Line",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_serviceLine"
+        },
+        {
+          "key": "proposedCodes",
+          "label": "Proposed Codes",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_proposedCodes"
+        },
+        {
+          "key": "clinicalSummary",
+          "label": "Clinical Summary",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_clinicalSummary"
+        }
+      ]
+    },
+    {
+      "id": "query",
+      "title": "Compliant Physician Query Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for compliant physician query.",
+      "table": "op_query",
+      "columns": [
+        {
+          "key": "provider",
+          "label": "Provider",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_provider"
+        },
+        {
+          "key": "encounterId",
+          "label": "Encounter Reference",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_encounterId"
+        },
+        {
+          "key": "clinicalIndicators",
+          "label": "Clinical Indicators",
+          "type": "textarea",
+          "required": true,
+          "dbKey": "data_clinicalIndicators"
+        },
+        {
+          "key": "clarificationNeeded",
+          "label": "Clarification Needed",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_clarificationNeeded"
+        }
+      ]
+    },
+    {
+      "id": "denial-risk",
+      "title": "Denial Risk Prediction Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for denial risk prediction.",
+      "table": "op_denial_risk",
+      "columns": [
+        {
+          "key": "payer",
+          "label": "Payer",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_payer"
+        },
+        {
+          "key": "procedure",
+          "label": "Procedure / DRG",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_procedure"
+        },
+        {
+          "key": "documentationGap",
+          "label": "Documentation Gap",
+          "type": "textarea",
+          "required": true,
+          "dbKey": "data_documentationGap"
+        },
+        {
+          "key": "riskLevel",
+          "label": "Risk Level",
+          "type": "select",
+          "required": false,
+          "options": [
+            "Low",
+            "Moderate",
+            "High",
+            "Critical"
+          ],
+          "dbKey": "data_riskLevel"
+        }
+      ]
+    },
+    {
+      "id": "drg",
+      "title": "DRG Validation Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for drg validation.",
+      "table": "op_drg",
+      "columns": [
+        {
+          "key": "encounterId",
+          "label": "Encounter Reference",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_encounterId"
+        },
+        {
+          "key": "assignedDrg",
+          "label": "Assigned DRG",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_assignedDrg"
+        },
+        {
+          "key": "principalDiagnosis",
+          "label": "Principal Diagnosis",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_principalDiagnosis"
+        },
+        {
+          "key": "validationNotes",
+          "label": "Validation Notes",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_validationNotes"
+        }
+      ]
+    },
+    {
+      "id": "quality",
+      "title": "Quality Measure Documentation Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for quality measure documentation.",
+      "table": "op_quality",
+      "columns": [
+        {
+          "key": "measure",
+          "label": "Quality Measure",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_measure"
+        },
+        {
+          "key": "encounterId",
+          "label": "Encounter Reference",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_encounterId"
+        },
+        {
+          "key": "requiredEvidence",
+          "label": "Required Evidence",
+          "type": "textarea",
+          "required": true,
+          "dbKey": "data_requiredEvidence"
+        },
+        {
+          "key": "evidenceStatus",
+          "label": "Evidence Status",
+          "type": "select",
+          "required": false,
+          "options": [
+            "Complete",
+            "Partial",
+            "Missing",
+            "Conflicting"
+          ],
+          "dbKey": "data_evidenceStatus"
+        }
+      ]
+    },
+    {
+      "id": "provider-education",
+      "title": "Provider Education Brief Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for provider education brief.",
+      "table": "op_provider_education",
+      "columns": [
+        {
+          "key": "provider",
+          "label": "Provider",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_provider"
+        },
+        {
+          "key": "specialty",
+          "label": "Specialty",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_specialty"
+        },
+        {
+          "key": "pattern",
+          "label": "Observed Pattern",
+          "type": "textarea",
+          "required": true,
+          "dbKey": "data_pattern"
+        },
+        {
+          "key": "educationGoal",
+          "label": "Education Goal",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_educationGoal"
+        }
+      ]
+    },
+    {
+      "id": "appeal",
+      "title": "Clinical Denial Appeal Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for clinical denial appeal.",
+      "table": "op_appeal",
+      "columns": [
+        {
+          "key": "denialId",
+          "label": "Denial ID",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_denialId"
+        },
+        {
+          "key": "denialReason",
+          "label": "Denial Reason",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_denialReason"
+        },
+        {
+          "key": "amount",
+          "label": "Amount",
+          "type": "currency",
+          "required": true,
+          "dbKey": "data_amount"
+        },
+        {
+          "key": "appealEvidence",
+          "label": "Appeal Evidence",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_appealEvidence"
+        }
+      ]
+    },
+    {
+      "id": "analytics",
+      "title": "Documentation Trend Analysis Register",
+      "description": "Operational records, ownership, status, financial value, and evidence for documentation trend analysis.",
+      "table": "op_analytics",
+      "columns": [
+        {
+          "key": "period",
+          "label": "Analysis Period",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_period"
+        },
+        {
+          "key": "serviceLine",
+          "label": "Service Line",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_serviceLine"
+        },
+        {
+          "key": "encounterCount",
+          "label": "Encounter Count",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_encounterCount"
+        },
+        {
+          "key": "analysisQuestion",
+          "label": "Analysis Question",
+          "type": "textarea",
+          "required": false,
+          "dbKey": "data_analysisQuestion"
+        }
+      ]
+    },
+    {
+      "id": "provider-roster",
+      "title": "Provider and Specialty Roster",
+      "description": "Providers, specialties, service lines, query response, and education status.",
+      "table": "op_provider_roster",
+      "columns": [
+        {
+          "key": "provider",
+          "label": "Provider",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_provider"
+        },
+        {
+          "key": "npi",
+          "label": "NPI",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_npi"
+        },
+        {
+          "key": "specialty",
+          "label": "Specialty",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_specialty"
+        },
+        {
+          "key": "queryResponseRate",
+          "label": "Query Response %",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_queryResponseRate"
+        }
+      ]
+    },
+    {
+      "id": "payer-policies",
+      "title": "Payer Policy Library",
+      "description": "Coverage policies, effective dates, documentation rules, and affected services.",
+      "table": "op_payer_policies",
+      "columns": [
+        {
+          "key": "payer",
+          "label": "Payer",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_payer"
+        },
+        {
+          "key": "policyId",
+          "label": "Policy ID",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_policyId"
+        },
+        {
+          "key": "service",
+          "label": "Affected Service",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_service"
+        },
+        {
+          "key": "effectiveDate",
+          "label": "Effective Date",
+          "type": "date",
+          "required": true,
+          "dbKey": "data_effectiveDate"
+        }
+      ]
+    },
+    {
+      "id": "query-templates",
+      "title": "Compliant Query Template Library",
+      "description": "Non-leading templates by clinical scenario and clarification need.",
+      "table": "op_query_templates",
+      "columns": [
+        {
+          "key": "template",
+          "label": "Template",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_template"
+        },
+        {
+          "key": "scenario",
+          "label": "Clinical Scenario",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_scenario"
+        },
+        {
+          "key": "queryType",
+          "label": "Query Type",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_queryType"
+        },
+        {
+          "key": "approvedLanguage",
+          "label": "Approved Language",
+          "type": "textarea",
+          "required": true,
+          "dbKey": "data_approvedLanguage"
+        }
+      ]
+    },
+    {
+      "id": "denial-reasons",
+      "title": "Clinical Denial Reason Library",
+      "description": "Denial categories, codes, evidence requirements, and appeal windows.",
+      "table": "op_denial_reasons",
+      "columns": [
+        {
+          "key": "reasonCode",
+          "label": "Reason Code",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_reasonCode"
+        },
+        {
+          "key": "category",
+          "label": "Category",
+          "type": "text",
+          "required": true,
+          "dbKey": "data_category"
+        },
+        {
+          "key": "appealDays",
+          "label": "Appeal Days",
+          "type": "number",
+          "required": true,
+          "dbKey": "data_appealDays"
+        },
+        {
+          "key": "requiredEvidence",
+          "label": "Required Evidence",
+          "type": "textarea",
+          "required": true,
+          "dbKey": "data_requiredEvidence"
+        }
+      ]
+    }
+  ],
+  "domainProduct": {
+    "home": "Clinical Documentation Integrity Command",
+    "context": "Concurrent encounter review, compliant queries, DRG integrity, denial prevention, and provider feedback.",
+    "features": [
+      {
+        "id": "encounter-review",
+        "title": "Concurrent Encounter Review",
+        "description": "Prioritize active encounters using clinical indicators, documentation gaps, expected DRG impact, and discharge timing.",
+        "view": "evidence",
+        "modules": [
+          "prebill",
+          "provider-roster"
+        ],
+        "actions": [
+          {
+            "id": "accept-evidence",
+            "label": "Accept Clinical Evidence",
+            "nextStatus": "Approved",
+            "auditDetail": "Accepted documented clinical evidence for code assignment."
+          },
+          {
+            "id": "open-gap",
+            "label": "Open Documentation Gap",
+            "nextStatus": "Investigating",
+            "auditDetail": "Opened a concurrent documentation gap for clarification."
+          }
+        ]
+      },
+      {
+        "id": "query-authoring",
+        "title": "Compliant Physician Query",
+        "description": "Author and route non-leading queries with indicators, answer options, response deadlines, and compliance approval.",
+        "view": "board",
+        "modules": [
+          "query",
+          "query-templates"
+        ],
+        "actions": [
+          {
+            "id": "send-query",
+            "label": "Send Compliant Query",
+            "nextStatus": "Review",
+            "auditDetail": "Released a compliant physician query with balanced answer options."
+          },
+          {
+            "id": "withdraw-query",
+            "label": "Withdraw Noncompliant Query",
+            "nextStatus": "Closed",
+            "auditDetail": "Withdrew a query that did not meet compliance standards."
+          }
+        ]
+      },
+      {
+        "id": "drg-integrity",
+        "title": "DRG & CC/MCC Integrity",
+        "description": "Compare working and expected DRG, validate principal diagnosis, procedures, CC/MCC support, and quality implications.",
+        "view": "reconciliation",
+        "modules": [
+          "drg",
+          "denial-reasons"
+        ],
+        "actions": [
+          {
+            "id": "confirm-drg",
+            "label": "Confirm Final DRG",
+            "nextStatus": "Approved",
+            "auditDetail": "Confirmed final DRG after clinical and coding validation."
+          },
+          {
+            "id": "route-second-level",
+            "label": "Route Second-Level Review",
+            "nextStatus": "Review",
+            "auditDetail": "Escalated material DRG variance for second-level review."
+          }
+        ]
+      },
+      {
+        "id": "denial-prevention",
+        "title": "Clinical Denial Prevention",
+        "description": "Apply payer policy and denial history before billing to identify missing medical necessity or clinical validation evidence.",
+        "view": "control",
+        "modules": [
+          "denial-risk",
+          "payer-policies"
+        ],
+        "actions": [
+          {
+            "id": "clear-bill",
+            "label": "Clear Encounter for Billing",
+            "nextStatus": "Approved",
+            "auditDetail": "Cleared encounter after denial-prevention evidence review."
+          },
+          {
+            "id": "hold-bill",
+            "label": "Place Billing Hold",
+            "nextStatus": "Investigating",
+            "auditDetail": "Placed billing hold for unresolved clinical denial risk."
+          }
+        ]
+      },
+      {
+        "id": "provider-feedback",
+        "title": "Provider Education & Feedback",
+        "description": "Track query response, agreement, documentation opportunities, service-line trends, and targeted education plans.",
+        "view": "board",
+        "modules": [
+          "provider-education",
+          "provider-roster"
+        ],
+        "actions": [
+          {
+            "id": "assign-education",
+            "label": "Assign Education Plan",
+            "nextStatus": "Investigating",
+            "auditDetail": "Assigned targeted provider documentation education."
+          },
+          {
+            "id": "complete-coaching",
+            "label": "Complete Provider Coaching",
+            "nextStatus": "Approved",
+            "auditDetail": "Completed and documented provider coaching intervention."
+          }
+        ]
+      }
+    ]
+  },
+  "integrations": [
+    {
+      "id": "integration-1",
+      "name": "EHR encounter feed",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    },
+    {
+      "id": "integration-2",
+      "name": "Coding encoder",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    },
+    {
+      "id": "integration-3",
+      "name": "Claims scrubber",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    },
+    {
+      "id": "integration-4",
+      "name": "Payer policy library",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    },
+    {
+      "id": "integration-5",
+      "name": "Denial management",
+      "category": "Domain data source",
+      "mode": "Read-only demo connector"
+    }
+  ],
+  "featureCount": 40,
+  "seededRecords": 300,
+  "demoUsers": 3,
+  "apiPort": 5515,
+  "dbName": "profit_ai_clinical_documentation_integrity_coding_query"
+}
