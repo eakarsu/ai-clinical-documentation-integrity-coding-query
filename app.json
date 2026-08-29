@@ -7,6 +7,15 @@
   "accent": "#0891b2",
   "valueLabel": "Revenue at review",
   "value": "$9.7M",
+  "commercialExtension": {
+    "title": "CDI Revenue Impact Lab",
+    "summary": "Model documentation opportunity and stage EHR, encoder, query, DRG, and denial-feedback integrations.",
+    "baselineLabel": "Annual encounter revenue", "volumeLabel": "Annual reviewed encounters", "unitValueLabel": "Average encounter value", "opportunityRateLabel": "Documentation opportunity rate", "captureRateLabel": "Realized improvement rate",
+    "defaults": { "volume": 75000, "unitValue": 9800, "opportunityRate": 1.8, "captureRate": 55 },
+    "pricing": "Per reviewed encounter or CDI seat with an outcome tier tied to validated net revenue improvement.",
+    "milestones": ["Connect one specialty encounter cohort", "Validate compliant query and coding rules", "Measure DRG and severity impact before billing", "Feed denial outcomes into reviewed rule updates"],
+    "connectors": [{"name":"EHR clinical feed","status":"Pilot","purpose":"Notes, orders, results, and encounter context","evidence":"FHIR provenance, authorship, service dates, and access controls"},{"name":"Encoder / grouper","status":"Planned","purpose":"Code and DRG impact validation","evidence":"Versioned grouper output and reviewer overrides"},{"name":"Denial feedback feed","status":"Planned","purpose":"Payer outcome learning","evidence":"Denial category, appeal result, payment, and policy version"}]
+  },
   "workflows": [
     {
       "id": "prebill",
